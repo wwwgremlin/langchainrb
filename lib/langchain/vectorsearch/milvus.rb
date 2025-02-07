@@ -16,13 +16,13 @@ module Langchain::Vectorsearch
 
       @client = ::Milvus::Client.new(
         url: url,
-        logger: Langchain.logger
+        api_key: api_key
       )
       @index_name = index_name
 
       super(llm: llm)
     end
-
+    
     def add_texts(texts:)
       client.entities.insert(
         collection_name: index_name,

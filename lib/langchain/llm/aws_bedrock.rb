@@ -69,7 +69,7 @@ module Langchain::LLM
     def embed(text:, **params)
       raise "Completion provider #{embedding_provider} is not supported." unless SUPPORTED_EMBEDDING_PROVIDERS.include?(embedding_provider)
 
-      parameters = compose_embedding_parameters params.merge(text:)
+      parameters = compose_embedding_parameters params.merge(text: text)
 
       response = client.invoke_model({
         model_id: @defaults[:embedding_model],
