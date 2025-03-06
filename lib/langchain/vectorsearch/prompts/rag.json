@@ -1,0 +1,8 @@
+{
+  "_type": "prompt",
+  "input_variables": [
+    "question",
+    "context"
+  ],
+  "template": "Context:\n{context}\n---\nQuestion: {question}\n---\nAnswer:\n"
+}

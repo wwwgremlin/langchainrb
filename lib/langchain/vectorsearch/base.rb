@@ -175,7 +175,7 @@ module Langchain::Vectorsearch
     # @return [String] Prompt
     def generate_rag_prompt(question:, context:)
       prompt_template = Langchain::Prompt.load_from_path(
-        file_path: Langchain.root.join("langchain/vectorsearch/prompts/rag.yaml")
+        file_path: Langchain.root.join("langchain/vectorsearch/prompts/rag.json")
       )
       prompt_template.format(question: question, context: context)
     end
