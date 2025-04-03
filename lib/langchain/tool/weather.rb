@@ -44,7 +44,7 @@ module Langchain::Tool
     def get_current_weather(city:, state_code:, country_code: nil, units: "imperial")
       validate_input(city: city, state_code: state_code, country_code: country_code, units: units)
 
-      Langchain.logger.debug("#{self.class} - get_current_weather #{{city:, state_code:, country_code:, units:}}")
+      Langchain.logger.debug("#{self.class} - get_current_weather #{{city: city, state_code: state_code, country_code: country_code, units: units}}")
 
       fetch_current_weather(city: city, state_code: state_code, country_code: country_code, units: units)
     end

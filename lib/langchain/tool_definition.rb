@@ -41,7 +41,7 @@ module Langchain::ToolDefinition
   # @param description [String] Description of the function
   # @yield Block that defines the parameters for the function
   def define_function(method_name, description:, &block)
-    function_schemas.add_function(method_name:, description:, &block)
+    function_schemas.add_function(method_name: method_name, description: description, &block)
   end
 
   # Returns the FunctionSchemas instance for this tool
@@ -56,15 +56,15 @@ module Langchain::ToolDefinition
   # @return [String] The snake_case version of the class name
   def tool_name
     @tool_name ||= name
-      .gsub("::", "_")
-      .gsub(/(?<=[A-Z])(?=[A-Z][a-z])|(?<=[a-z\d])(?=[A-Z])/, "_")
-      .downcase
+                     .gsub("::", "_")
+                     .gsub(/(?<=[A-Z])(?=[A-Z][a-z])|(?<=[a-z\d])(?=[A-Z])/, "_")
+                     .downcase
   end
 
   # Manages schemas for functions
   class FunctionSchemas
     def initialize(tool_name)
-      @schemas = {}
+      @schemas   = {}
       @tool_name = tool_name
     end
 
@@ -86,8 +86,8 @@ module Langchain::ToolDefinition
       end
 
       @schemas[method_name] = {
-        type: "function",
-        function: {name:, description:, parameters:}.compact
+        type:     "function",
+        function: { name: name, description: description, parameters: parameters }.compact
       }
     end
 
@@ -105,9 +105,9 @@ module Langchain::ToolDefinition
       @schemas.values.map do |schema|
         # Adds a default input_schema if no parameters are present
         schema[:function][:parameters] ||= {
-          type: "object",
+          type:       "object",
           properties: {},
-          required: []
+          required:   []
         }
 
         schema[:function].transform_keys(parameters: :input_schema)
@@ -127,7 +127,7 @@ module Langchain::ToolDefinition
     VALID_TYPES = %w[object array string number integer boolean].freeze
 
     def initialize(parent_type:)
-      @schema = (parent_type == "object") ? {type: "object", properties: {}, required: []} : {}
+      @schema      = (parent_type == "object") ? { type: "object", properties: {}, required: [] } : {}
       @parent_type = parent_type
     end
 
@@ -150,9 +150,9 @@ module Langchain::ToolDefinition
     # @yield [Block] Block for nested properties (only for object and array types)
     # @raise [ArgumentError] If any parameter is invalid
     def property(name = nil, type:, description: nil, enum: nil, required: false, &block)
-      validate_parameters(name:, type:, enum:, required:)
+      validate_parameters(name: name, type: type, enum: enum, required: required)
 
-      prop = {type:, description:, enum:}.compact
+      prop = { type: type, description: description, enum: enum }.compact
 
       if block_given? # rubocop:disable Performance/BlockGivenWithExplicitBlock
         nested_schema = ParameterBuilder.new(parent_type: type).build(&block)
